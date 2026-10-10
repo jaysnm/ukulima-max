@@ -1,0 +1,60 @@
+repos:
+  # ── Generic hygiene ──────────────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+
+  # ── Backend: Python lint + format (Ruff) ────────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        name: ruff (backend lint)
+        args: ["--fix"]
+        files: ^backend/
+      - id: ruff-format
+        name: ruff (backend format)
+        files: ^backend/
+
+  # ── Frontend: ESLint + Prettier ──────────────────────────────────────────
+  - repo: local
+    hooks:
+      - id: frontend-eslint
+        name: eslint (frontend)
+        # pre-commit always passes repo-root-relative paths, so the config is
+        # pointed at explicitly rather than `cd`-ing into frontend/ first.
+        entry: frontend/node_modules/.bin/eslint --config frontend/eslint.config.js --fix
+        language: system
+        files: ^frontend/src/.*\.(ts|tsx)$
+      - id: frontend-prettier
+        name: prettier (frontend)
+        entry: frontend/node_modules/.bin/prettier --config frontend/.prettierrc.json --write
+        language: system
+        files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|md)$
+        exclude: ^frontend/(dist|node_modules)/
+
+  # ── Branch protection: block direct commits/pushes to main ──────────────
+  - repo: local
+    hooks:
+      - id: no-commit-to-main
+        name: block commits directly on main
+        entry: scripts/hooks/no-direct-main.sh
+        language: script
+        stages: [pre-commit]
+        pass_filenames: false
+      - id: no-push-to-main
+        name: block pushes directly to main
+        entry: scripts/hooks/no-direct-main.sh
+        language: script
+        stages: [pre-push]
+        pass_filenames: false

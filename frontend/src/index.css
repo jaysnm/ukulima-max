@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+}
+
+@layer components {
+  /* Native <select> chrome varies wildly across browsers/OSes and looks out
+     of place next to our rounded inputs, so it's replaced with one consistent
+     chevron everywhere. Callers still need to add their own `pr-8` (or more)
+     so text never runs under the arrow. */
+  .select-field {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.65rem center;
+    background-size: 16px 16px;
+    cursor: pointer;
+  }
+  .select-field:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* Same idea as .select-field, but for compact colored status pills (e.g. the
+     planting status selector) — no background override, and the chevron
+     inherits the pill's own text color instead of a fixed gray. */
+  .select-pill {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 12px 12px;
+    cursor: pointer;
+  }
+}

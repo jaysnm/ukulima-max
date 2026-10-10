@@ -1,0 +1,50 @@
+[project]
+name = "ukulima-max-backend"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django==6.1",
+    "wagtail==8.0",
+    "strawberry-graphql[django]==0.324.4",
+    "strawberry-graphql-django==0.88.0",
+    "django-cors-headers==4.6.0",
+    "psycopg2-binary==2.9.10",
+    "djangorestframework==3.18.0",
+    "djangorestframework-simplejwt==5.3.1",
+    "pillow==11.0.0",
+    "django-environ==0.11.2",
+    "whitenoise==6.8.2",
+    "gunicorn==23.0.0",
+    "django-filter==24.3",
+    "django-simple-history>=3.13.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.8.4",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "DJ",  # flake8-django
+]
+ignore = [
+    "E501",  # line length is enforced by the formatter
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config", "schema"]
+
+[tool.ruff.lint.per-file-ignores]
+# Django settings modules layer on top of each other via wildcard imports.
+"config/settings/*.py" = ["F403", "F405"]
